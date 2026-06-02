@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amazon Clone</title>
+    <style>
+        :root {
+            --bg: #eaeef2;
+            --surface: #ffffff;
+            --primary: #146eb4;
+            --text: #111827;
+            --muted: #4b5563;
+            --accent: #f0c14b;
+            --shadow: 0 14px 35px rgba(15, 23, 42, 0.12);
+            --radius: 18px;
+            --gap: 1.25rem;
+        }
+        * {
+            box-sizing: border-box;
+        }
+        html {
+            font-family: Inter, system-ui, sans-serif;
+            line-height: 1.5;
+            color: var(--text);
+            background: var(--bg);
+        }
+        body {
+            margin: 0;
+        }
+        img {
+            max-width: 100%;
+            display: block;
+        }
+        .container {
+            width: min(1200px, calc(100% - 2rem));
+            margin: 0 auto;
+        }
+        .flex {
+            display: flex;
+            gap: 0.75rem;
+        }
+        .align-center {
+            align-items: center;
+        }
+        .justify-between {
+            justify-content: space-between;
+        }
+        .btn {
+            border: none;
+            border-radius: 999px;
+            padding: 0.9rem 1.4rem;
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            padding: 0.45rem 0.7rem;
+            border-radius: 999px;
+            background: #dbeafe;
+            color: #1d4ed8;
+            font-size: 0.85rem;
+        }
+        header {
+            background: linear-gradient(90deg, #0f4c81, #1a6bb8);
+            color: white;
+            padding: 1rem 0;
+        }
+        .top-nav {
+            display: grid;
+            grid-template-columns: auto 1fr auto;
+            gap: 1rem;
+            align-items: center;
+        }
+        .brand {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: -0.04em;
+        }
+        .search-bar {
+            display: flex;
+            background: white;
+            border-radius: 999px;
+            overflow: hidden;
+        }
+        .search-bar input {
+            flex: 1;
+            border: none;
+            padding: 0.95rem 1rem;
+            font-size: 0.95rem;
+            outline: none;
+        }
+        .search-bar button {
+            border: none;
+            background: #f3f4f6;
+            padding: 0 1rem;
+            cursor: pointer;
+        }
+        .nav-secondary {
+            margin-top: 1rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 0.75rem;
+        }
+        .nav-link {
+            padding: 0.8rem 1rem;
+            background: rgba(255,255,255,0.14);
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            font-size: 0.95rem;
+            text-align: center;
+        }
+        main {
+            padding: 2rem 0 3rem;
+        }
+        .hero {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .hero-panel {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 1rem;
+        }
+        .hero-panel h1 {
+            margin: 0;
+            font-size: clamp(2rem, 3vw, 3.25rem);
+            line-height: 1.05;
+        }
+        .hero-panel p {
+            margin: 0;
+            color: var(--muted);
+            max-width: 38rem;
+        }
+        .hero-banner {
+            border-radius: var(--radius);
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            min-height: 320px;
+            background: linear-gradient(180deg, #f7fafc, #e2e8f0);
+            display: grid;
+            place-items: center;
+        }
+        .hero-banner img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+        .section {
+            margin-top: 2rem;
+        }
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .section-header h2 {
+            margin: 0;
+            font-size: 1.4rem;
+        }
+        .grid {
+            display: grid;
+            gap: 1rem;
+        }
+        .products-grid {
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        }
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 1rem;
+            box-shadow: var(--shadow);
+            display: grid;
+            gap: 0.85rem;
+        }
+        .card .title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+        .card .price {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1.05rem;
+        }
+        .card .meta {
+            color: var(--muted);
+            font-size: 0.95rem;
+        }
+        .banner-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .banner-card {
+            position: relative;
+            overflow: hidden;
+            min-height: 200px;
+            background: linear-gradient(135deg, #ffe8d6, #ffedd5);
+            border-radius: 22px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .banner-card strong {
+            font-size: 1.2rem;
+        }
+        .banner-card small {
+            color: var(--muted);
+        }
+        .full-width-banner {
+            background: linear-gradient(135deg, #eef2ff, #dbeafe);
+            border-radius: 22px;
+            padding: 2rem;
+            display: grid;
+            grid-template-columns: 1fr minmax(180px, 280px);
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .full-width-banner h3 {
+            margin: 0;
+            font-size: 1.6rem;
+        }
+        .full-width-banner p {
+            margin: 0;
+            color: var(--muted);
+        }
+        .full-width-banner .hero-image {
+            width: 100%;
+            border-radius: 18px;
+            overflow: hidden;
+        }
+        .product-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: grid;
+            gap: 1rem;
+        }
+        .product-item {
+            display: grid;
+            grid-template-columns: 100px 1fr;
+            gap: 1rem;
+            align-items: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+        }
+        .product-item img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: contain;
+        }
+        @media (max-width: 900px) {
+            .hero {
+                grid-template-columns: 1fr;
+            }
+            .full-width-banner {
+                grid-template-columns: 1fr;
+            }
+            .banner-grid {
+                grid-template-columns: 1fr;
+            }
+            .top-nav {
+                grid-template-columns: 1fr;
+            }
+        }
+        @media (max-width: 620px) {
+            .search-bar {
+                flex-direction: column;
+            }
+            .search-bar button {
+                width: 100%;
+                padding: 0.9rem;
+            }
+            .nav-secondary {
+                grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            }
+            .product-item {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="top-nav">
+                <a href="#" class="brand">amazon</a>
+                <form class="search-bar" role="search">
+                    <label for="search" class="sr-only">Search products</label>
+                    <input id="search" type="search" placeholder="Search Amazon" aria-label="Search products">
+                    <button type="submit">Search</button>
+                </form>
+                <div class="flex align-center justify-between">
+                    <div class="badge">Free delivery</div>
+                    <button class="btn">Sign in</button>
+                </div>
+            </div>
+            <nav class="nav-secondary" aria-label="Main categories">
+                <a href="#" class="nav-link">Today&apos;s Deals</a>
+                <a href="#" class="nav-link">Customer Service</a>
+                <a href="#" class="nav-link">Gift Cards</a>
+                <a href="#" class="nav-link">Sell</a>
+                <a href="#" class="nav-link">Registry</a>
+                <a href="#" class="nav-link">Amazon Basics</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section class="hero">
+            <div class="hero-panel">
+                <span class="badge">Best sellers</span>
+                <h1>Discover top picks, fresh arrivals, and curated collections.</h1>
+                <p>Shop with confidence using fast shipping, smart search, and easy browsing across all categories.</p>
+                <div class="flex" style="flex-wrap: wrap; gap: 0.75rem;">
+                    <button class="btn">Explore now</button>
+                    <button class="btn" style="background: #f59e0b;">Shop electronics</button>
+                </div>
+            </div>
+            <div class="hero-banner" aria-hidden="true">
+                <img src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=900&q=80" alt="Shopping showcase">
+            </div>
+        </section>
+        <section class="section">
+            <div class="section-header">
+                <h2>Featured deals</h2>
+                <button class="btn">See more</button>
+            </div>
+            <div class="grid products-grid">
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80" alt="Wireless earbuds">
+                    <p class="title">Wireless earbuds with noise cancellation</p>
+                    <p class="meta">Trending audio accessories</p>
+                    <p class="price">$59.99</p>
+                </article>
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80" alt="Smart kitchen appliance">
+                    <p class="title">Smart kitchen appliance bundle</p>
+                    <p class="meta">Save on home essentials</p>
+                    <p class="price">$129.99</p>
+                </article>
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=600&q=80" alt="Fitness smartwatch">
+                    <p class="title">Fitness smartwatch with health tracking</p>
+                    <p class="meta">Wearable tech for every day</p>
+                    <p class="price">$99.00</p>
+                </article>
+            </div>
+        </section>
+        <section class="section">
+            <div class="banner-grid">
+                <div class="banner-card">
+                    <div>
+                        <strong>Up to 40% off</strong>
+                        <p>Home essentials for your everyday comfort.</p>
+                    </div>
+                    <button class="btn" style="width: fit-content;">Shop home</button>
+                </div>
+                <div class="banner-card">
+                    <div>
+                        <strong>New arrivals</strong>
+                        <p>Fresh fashion pieces for your seasonal wardrobe.</p>
+                    </div>
+                    <button class="btn" style="width: fit-content;">Browse style</button>
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="full-width-banner">
+                <div>
+                    <h3>Prime savings for fast delivery.</h3>
+                    <p>Enjoy quick shipping, exclusive offers, and easy returns across millions of items.</p>
+                    <button class="btn">Join Prime</button>
+                </div>
+                <div class="hero-image">
+                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=700&q=80" alt="Prime membership benefits">
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="section-header">
+                <h2>Popular picks</h2>
+                <button class="btn">View all</button>
+            </div>
+            <ul class="product-list">
+                <li class="product-item">
+                    <img src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=400&q=80" alt="Coffee maker">
+                    <div>
+                        <p class="title">Compact coffee maker</p>
+                        <p class="meta">Enjoy fresh brewed coffee at home</p>
+                        <p class="price">$74.99</p>
+                    </div>
+                </li>
+                <li class="product-item">
+                    <img src="https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=400&q=80" alt="Noise cancelling headphones">
+                    <div>
+                        <p class="title">Noise cancelling headphones</p>
+                        <p class="meta">Immersive sound for work and play</p>
+                        <p class="price">$89.50</p>
+                    </div>
+                </li>
+                <li class="product-item">
+                    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=400&q=80" alt="Smart speaker">
+                    <div>
+                        <p class="title">Smart speaker with voice assistant</p>
+                        <p class="meta">Control your space with one voice</p>
+                        <p class="price">$49.99</p>
+                    </div>
+                </li>
+            </ul>
+        </section>
+    </main>
+</body>
+</html>

@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Scroll with Skeleton Cards</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+            animation: fadeIn 0.6s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Skeleton Card Styles */
+        .skeleton-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        .skeleton-card .image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+        }
+
+        .skeleton-card .content {
+            padding: 16px;
+        }
+
+        .skeleton-card .title {
+            height: 20px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+
+        .skeleton-card .description {
+            height: 16px;
+            background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+            background-size: 200% 100%;
+            animation: shimmer 2s infinite;
+            margin-bottom: 12px;
+            border-radius: 4px;
+        }
+
+        .skeleton-card .description:last-of-type {
+            margin-bottom: 0;
+            width: 85%;
+        }
+
+        @keyframes shimmer {
+            0% {
+                background-position: 200% 0;
+            }
+            100% {
+                background-position: -200% 0;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
+            50% {
+                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            }
+        }
+
+        /* Actual Card Styles */
+        .card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+
+        .card .image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .card .content {
+            padding: 16px;
+        }
+
+        .card .title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .card .description {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .card .meta {
+            font-size: 0.85rem;
+            color: #999;
+        }
+
+        .loading-indicator {
+            text-align: center;
+            padding: 20px;
+            color: white;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Infinite Scroll Feed</h1>
+        <div class="cards-grid" id="cardsGrid">
+            <!-- Cards will be inserted here -->
+        </div>
+    </div>
+
+    <div id="loadingIndicator" class="loading-indicator" style="display: none;">
+        <div class="spinner"></div>
+    </div>
+
+
+    <script>
+        let currentPage = 0;
+        let isLoading = false;
+        const cardsPerPage = 12;
+        const cardsGrid = document.getElementById('cardsGrid');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        // Show skeleton cards
+        function showSkeletons(count = cardsPerPage) {
+            for (let i = 0; i < count; i++) {
+                const skeleton = document.createElement('div');
+                skeleton.className = 'skeleton-card';
+                skeleton.innerHTML = `
+                    <div class="image"></div>
+                    <div class="content">
+                        <div class="title"></div>
+                        <div class="description"></div>
+                        <div class="description"></div>
+                    </div>
+                `;
+                cardsGrid.appendChild(skeleton);
+            }
+        }
+
+        // Load more cards
+        function loadMoreCards() {
+            if (isLoading) return;
+            
+            isLoading = true;
+            loadingIndicator.style.display = 'block';
+
+            // Simulate API delay
+            setTimeout(() => {
+                // Show skeleton cards
+                showSkeletons(cardsPerPage);
+
+                // Simulate loading data and replace skeletons with actual cards
+                setTimeout(() => {
+                    const skeletons = document.querySelectorAll('.skeleton-card');
+                    skeletons.forEach((skeleton, index) => {
+                        const cardNumber = currentPage * cardsPerPage + index + 1;
+                        const card = document.createElement('div');
+                        card.className = 'card';
+                        card.innerHTML = `
+                            <div class="image">${cardNumber}</div>
+                            <div class="content">
+                                <div class="title">Card #${cardNumber}</div>
+                                <div class="description">This is a sample card description for card number ${cardNumber}. Each card is dynamically loaded as you scroll.</div>
+                                <div class="meta">Posted 2 hours ago</div>
+                            </div>
+                        `;
+                        skeleton.replaceWith(card);
+                    });
+
+                    currentPage++;
+                    isLoading = false;
+                    loadingIndicator.style.display = 'none';
+                }, 800);
+            }, 500);
+        }
+
+        // Infinite scroll using onscroll event
+        window.addEventListener('scroll', () => {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 500) {
+                loadMoreCards();
+            }
+        });
+
+        // Load initial cards
+        showSkeletons(cardsPerPage);
+        setTimeout(() => {
+            loadMoreCards();
+        }, 500);
+    </script>
+</body>
+</html>
