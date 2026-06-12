@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class=" dark:text-white dark:bg-gray-900 text-gray-900 bg-white">
+    <nav id="nav" class="fixed top-0 w-full px-3 h-15 flex justify-between items-center bg-yellow-400 dark:bg-gray-800 z-10">
+        <div class="logo w-fit">E-Comm</div>
+        <form class="relative flex w-[50%] md:w-auto h-[80%] items-center  mx-3  rounded "> 
+            <div class="w-10"></div>
+            <select name=" category" id="drop-down" onchange="handleChange(this)" class= "absolute left-0  w-contain bg-gray-200 p-2 text-black overflow-hidden rounded-l my-3 h-[100%]  flex-1  " >
+                <option value="">All</option>
+                <option class="w-fit" value="men's clothing">Men's clothing</option>
+                <option value="jewelery">Jewelery</option>
+                <option value="electronics">Electronics</option>
+                <option value="women's clothing">Women's clothing</option>
+            </select>
+            <input type="text" placeholder="Search for products" id="search-input" class="z-2 flex-2 w-auto h-[100%]   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-black  " >
+            <button type="button" onclick="handleSearch()" class="flex-1 bg-blue-500 text-white p-2 rounded-r h-full"  >Search</button>
+
+        </form>
+       <svg class = "p-1"
+        stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 576 512" height="40px" width="40px" xmlns="http://www.w3.org/2000/svg"><path d="M528.12 301.319l47.273-208C578.806 78.301 567.391 64 551.99 64H159.208l-9.166-44.81C147.758 8.021 137.93 0 126.529 0H24C10.745 0 0 10.745 0 24v16c0 13.255 10.745 24 24 24h69.883l70.248 343.435C147.325 417.1 136 435.222 136 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-15.674-6.447-29.835-16.824-40h209.647C430.447 426.165 424 440.326 424 456c0 30.928 25.072 56 56 56s56-25.072 56-56c0-22.172-12.888-41.332-31.579-50.405l5.517-24.276c3.413-15.018-8.002-29.319-23.403-29.319H218.117l-6.545-32h293.145c11.206 0 20.92-7.754 23.403-18.681z"></path>
+       </svg>
+    </nav>
+    <div class="h-15"></div>
+    <main class="pt-1 px-3 w-full  min-h-screen">
+        <span class="fixed top-[50%] left-[50%] -translate-x-1/2 -translate-y-1/2" id="loader">Loading Products...</span>
+        <div id="productContainer" class=" none items grid grid-col-3 gap-3">
+         
+        </div>
+    </main>
+    <script src="main.js"></script>
+</body>
+</html>

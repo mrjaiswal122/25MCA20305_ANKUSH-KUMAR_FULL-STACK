@@ -1,0 +1,130 @@
+*{
+    box-sizing: border-box;
+    padding: 0px;
+    margin: 0px;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+/* header */
+
+header{
+    margin: auto;
+    position: sticky;
+    top: 0;
+    background-color: antiquewhite;
+    z-index: 100;
+}
+#title{
+    display: flex;
+    height: 90px;
+    justify-content: space-evenly;
+    border-bottom: 1px solid black;
+    align-items: center;
+}
+
+#search{
+    height: 30px;
+    border: 1px solid black;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+#search input{
+    width: 400px;
+    height: 28px;
+    border: none;
+    outline: none;
+    background: transparent;
+}
+#search i{
+   cursor: pointer;
+   padding: 5px;
+   height: 100%;
+   border-left: 1px solid black;
+}
+
+
+/* navbar */
+
+nav{
+    font-size: 18px;
+    border-bottom: 1px solid black;
+
+}
+
+nav ul{
+    width: 800px;
+    margin: auto;
+    display: flex;
+    margin-top: 8px;
+    margin-bottom: 8px;
+    justify-content: space-between;
+}
+nav ul li{
+    list-style: none;
+    cursor: pointer;
+}
+nav ul li select{
+    border: none;
+    font-size: 18px;
+    background: transparent;
+    cursor: pointer;
+}
+nav ul li select:focus{
+    border: none;
+    outline: none;
+}
+
+/* main content */
+
+.no-item ,.loader{
+    height: 80vh;
+    width:100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.no-item{
+    display: none;
+}
+
+.items{
+    max-width: 1200px;
+    margin: auto;
+    padding-top:20px ;
+    display: flex ;
+    gap: 25px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.items .card{
+    width: 250px;
+    height: 410px;
+    border: 1px solid black;
+    overflow: hidden;
+    cursor: pointer;
+    @apply dark:border-gray-200
+}
+
+.items .card .img-box{
+    width: 100%;
+    height:250px;
+    border-bottom: 1px solid black;
+    overflow: hidden;
+}
+.items .card .img-box img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid black;
+     transition: transform 0.3s ease;
+}
+.items .card .img-box:hover img{
+    transform: scale(1.1);
+}
+.items .info{
+    padding: 4px;
+}
+
+
